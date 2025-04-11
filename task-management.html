@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    /* Hover effect for navigation links */
+    .nav-link {
+        color: #6d4c8d;
+        text-decoration: none;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        background-color: #e8d8f2; /* Light lavender background */
+        color: #4a355a; /* Slightly darker lavender text */
+        text-decoration: underline; /* Underline on hover */
+        padding: 5px 10px; /* Slight padding for better highlight */
+        border-radius: 5px; /* Rounded corners for hover effect */
+    }
+</style>
+
+<body onload="fetchTasks()" style="background-color: #f3eaf7; font-family: Arial, sans-serif; color: #4a355a;">
+
+    <!-- Page Title -->
+    <div class="container text-center mt-4">
+        <h1 style="color: #6d4c8d; font-weight: bold;">Task Management</h1>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav style="background-color: #ffffff; border: 2px solid #9c7fbf; margin: 20px auto; padding: 10px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+        <ul class="nav justify-content-center" style="gap: 10px;">
+            <li class="nav-item"><a class="nav-link" href="dashboard.html" style="color: #6d4c8d; text-decoration: none;">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="vendor-management.html" style="color: #6d4c8d; text-decoration: none;">Vendor Management</a></li>
+            <li class="nav-item"><a class="nav-link" href="contract-management.html" style="color: #6d4c8d; text-decoration: none;">Contract Management</a></li>
+            <li class="nav-item"><a class="nav-link" href="purchase-order.html" style="color: #6d4c8d; text-decoration: none;">Purchase Orders</a></li>
+            <li class="nav-item"><a class="nav-link" href="task-management.html" style="color: #6d4c8d; text-decoration: none;">Task Management</a></li>
+            <li class="nav-item"><a class="nav-link" href="system-settings.html" style="color: #6d4c8d; text-decoration: none;">System Settings</a></li>
+            <li class="nav-item"><a class="nav-link" href="budget-tracking.html" style="color: #6d4c8d; text-decoration: none;">Budget Monitoring</a></li>
+            <li class="nav-item"><a class="nav-link" href="user-management.html" style="color: #6d4c8d; text-decoration: none;">User Management</a></li>
+            <li class="nav-item"><a class="nav-link" href="reports.html" style="color: #6d4c8d; text-decoration: none;">Reports</a></li>
+            <li class="nav-item"><a class="nav-link" href="audit-logs.html" style="color: #6d4c8d; text-decoration: none;">Audit Logs</a></li>
+            <li class="nav-item"><a class="nav-link" href="login.html" style="color: #6d4c8d; text-decoration: none;">Log Out</a></li>
+        </ul>
+    </nav>
+
+    <!-- Create Task Form -->
+    <div class="container my-4">
+        <h2 style="color: #6d4c8d;">Create Task</h2>
+        <form id="taskForm" onsubmit="createTask(event)" class="p-4 border rounded" style="background-color: #ffffff; border: 2px solid #9c7fbf; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <div class="mb-3">
+                <label for="assignedTo" class="form-label" style="color: #4a355a;">Assigned To:</label>
+                <input type="text" id="assignedTo" class="form-control" style="border: 1px solid #9c7fbf;" required>
+            </div>
+            <div class="mb-3">
+                <label for="taskDescription" class="form-label" style="color: #4a355a;">Task Description:</label>
+                <textarea id="taskDescription" class="form-control" style="border: 1px solid #9c7fbf;" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="dueDate" class="form-label" style="color: #4a355a;">Due Date:</label>
+                <input type="date" id="dueDate" class="form-control" style="border: 1px solid #9c7fbf;" required>
+            </div>
+            <div class="mb-3">
+                <label for="status" class="form-label" style="color: #4a355a;">Status:</label>
+                <select id="status" class="form-select" style="border: 1px solid #9c7fbf;" required>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+            <button type="submit" class="btn" style="background-color: #6d4c8d; color: #fff; border: none;">Create Task</button>
+        </form>
+    </div>
+
+    <!-- Task List Table -->
+    <div class="container my-4">
+        <h2 style="color: #6d4c8d;">Task List</h2>
+        <table class="table table-striped table-bordered" style="background-color: #ffffff; border: 2px solid #9c7fbf; color: #4a355a; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <thead style="background-color: #e8d8f2;">
+                <tr>
+                    <th>ID</th>
+                    <th>Assigned To</th>
+                    <th>Description</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="taskList">
+                <!-- Dynamic rows populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-3" style="background-color: #ffffff; border-top: 2px solid #9c7fbf; color: #4a355a;">
+        <p>© 2024 Vendor Management System</p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

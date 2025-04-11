@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contract Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    /* Hover effect for navigation links */
+    .nav-link {
+        color: #6d4c8d;
+        text-decoration: none;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .nav-link:hover {
+        background-color: #e8d8f2; /* Light lavender background */
+        color: #4a355a; /* Slightly darker lavender text */
+        text-decoration: underline; /* Underline on hover */
+        padding: 5px 10px; /* Slight padding for better highlight */
+        border-radius: 5px; /* Rounded corners for hover effect */
+    }
+</style>
+
+<body onload="fetchContracts()" style="background-color: #f3eaf7; font-family: Arial, sans-serif; color: #4a355a;">
+
+    <!-- Page Title -->
+    <div class="container text-center mt-4">
+        <h1 style="color: #6d4c8d; font-weight: bold;">Contract Management</h1>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav style="background-color: #ffffff; border: 2px solid #9c7fbf; margin: 20px auto; padding: 10px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+        <ul class="nav justify-content-center" style="gap: 10px;">
+            <li class="nav-item"><a class="nav-link" href="dashboard.html" style="color: #6d4c8d; text-decoration: none;">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="vendor-management.html" style="color: #6d4c8d; text-decoration: none;">Vendor Management</a></li>
+            <li class="nav-item"><a class="nav-link" href="contract-management.html" style="color: #6d4c8d; text-decoration: none;">Contract Management</a></li>
+            <li class="nav-item"><a class="nav-link" href="purchase-order.html" style="color: #6d4c8d; text-decoration: none;">Purchase Orders</a></li>
+            <li class="nav-item"><a class="nav-link" href="task-management.html" style="color: #6d4c8d; text-decoration: none;">Task Management</a></li>
+            <li class="nav-item"><a class="nav-link" href="system-settings.html" style="color: #6d4c8d; text-decoration: none;">System Settings</a></li>
+            <li class="nav-item"><a class="nav-link" href="budget-tracking.html" style="color: #6d4c8d; text-decoration: none;">Budget Monitoring</a></li>
+            <li class="nav-item"><a class="nav-link" href="user-management.html" style="color: #6d4c8d; text-decoration: none;">User Management</a></li>
+            <li class="nav-item"><a class="nav-link" href="reports.html" style="color: #6d4c8d; text-decoration: none;">Reports</a></li>
+            <li class="nav-item"><a class="nav-link" href="audit-logs.html" style="color: #6d4c8d; text-decoration: none;">Audit Logs</a></li>
+            <li class="nav-item"><a class="nav-link" href="login.html" style="color: #6d4c8d; text-decoration: none;">Log Out</a></li>
+        </ul>
+    </nav>
+
+    <hr style="border-top: 2px solid #9c7fbf;">
+
+    <!-- Add/Update Contract Form -->
+    <div class="container my-4">
+        <h2 style="color: #6d4c8d;">Add or Edit Contract</h2>
+        <form id="contractForm" onsubmit="addOrUpdateContract(event)" class="p-4 border rounded" style="background-color: #ffffff; border: 2px solid #9c7fbf; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <input type="hidden" id="contractID">
+            <div class="mb-3">
+                <label for="vendorID" class="form-label" style="color: #4a355a;">Vendor ID:</label>
+                <input type="number" id="vendorID" class="form-control" style="border: 1px solid #9c7fbf;" placeholder="Enter Vendor ID" required>
+            </div>
+            <div class="mb-3">
+                <label for="startDate" class="form-label" style="color: #4a355a;">Start Date:</label>
+                <input type="date" id="startDate" class="form-control" style="border: 1px solid #9c7fbf;" required>
+            </div>
+            <div class="mb-3">
+                <label for="endDate" class="form-label" style="color: #4a355a;">End Date:</label>
+                <input type="date" id="endDate" class="form-control" style="border: 1px solid #9c7fbf;" required>
+            </div>
+            <div class="mb-3">
+                <label for="terms" class="form-label" style="color: #4a355a;">Terms:</label>
+                <textarea id="terms" class="form-control" style="border: 1px solid #9c7fbf;" placeholder="Contract Terms" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="specialClauses" class="form-label" style="color: #4a355a;">Special Clauses:</label>
+                <textarea id="specialClauses" class="form-control" style="border: 1px solid #9c7fbf;" placeholder="Optional Special Clauses"></textarea>
+            </div>
+            <button type="submit" class="btn" style="background-color: #6d4c8d; color: #fff; border: none;">Save Contract</button>
+        </form>
+    </div>
+
+    <hr style="border-top: 2px solid #9c7fbf;">
+
+    <!-- Contracts List -->
+    <div class="container my-4">
+        <h2 style="color: #6d4c8d;">Contracts List</h2>
+        <input type="number" id="filterVendorID" class="form-control mb-3" style="border: 1px solid #9c7fbf;" placeholder="Filter by Vendor ID" oninput="fetchContracts()">
+        <table id="contractTable" class="table table-striped table-bordered" style="background-color: #ffffff; border: 2px solid #9c7fbf; color: #4a355a; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <thead style="background-color: #e8d8f2;">
+                <tr>
+                    <th>Contract ID</th>
+                    <th>Vendor ID</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Terms</th>
+                    <th>Special Clauses</th>
+                    <th>Renewal Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Contracts will be dynamically populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-3" style="background-color: #ffffff; border-top: 2px solid #9c7fbf; color: #4a355a;">
+        <p>© 2024 Vendor Management System</p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
